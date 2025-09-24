@@ -294,7 +294,7 @@ return {
 					},
 				},
 				html = {
-					filetypes = { "html", "htmlangular", "htmldjango", "twig" },
+					filetypes = { "html", "htmlangular", "htmldjango" },
 					init_options = {
 						configurationSection = { "html", "css", "javascript" },
 						embeddedLanguages = {
