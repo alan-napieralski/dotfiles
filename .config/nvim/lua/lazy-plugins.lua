@@ -57,7 +57,7 @@ require("lazy").setup({
 
 	require("custom/plugins/vim-tmux-navigator"),
 
-	require("custom/plugins/leap"),
+	-- require("custom/plugins/leap"),
 
 	-- require("custom/plugins/avante"),
 
@@ -70,6 +70,13 @@ require("lazy").setup({
 	require("custom/plugins/refactoring"),
 
 	require("custom/plugins/trouble"),
+
+	require("custom/plugins/fugitive"),
+
+	require("custom/plugins/diffview"),
+
+	require("custom/plugins/barbecue"),
+
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
 	-- init.lua. If you want these files, they are in the repository, so you can just download them and
 	-- place them in the correct locations.
