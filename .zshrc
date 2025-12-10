@@ -121,4 +121,3 @@ alias npm-x86="arch -x86_64 /usr/local/bin/node /usr/local/bin/npm"
 
 cd ~/Developer
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
