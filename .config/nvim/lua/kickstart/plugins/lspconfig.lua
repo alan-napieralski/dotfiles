@@ -352,6 +352,27 @@ return {
 						"svelte",
 						"templ",
 					},
+					cssls = {
+						filetypes = { "css", "scss", "less" },
+						settings = {
+							css = {
+								validate = true,
+								lint = {
+									unknownAtRules = "ignore", -- Ignore @tailwind and other custom at-rules
+								},
+							},
+							scss = {
+								validate = true,
+								lint = {
+									unknownAtRules = "ignore",
+								},
+							},
+							less = {
+								validate = true,
+							},
+						},
+					},
+
 					settings = {
 						tailwindCSS = {
 							includeLanguages = {
@@ -388,6 +409,7 @@ return {
 				"vue-language-server",
 				"intelephense",
 				"html",
+				"cssls",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

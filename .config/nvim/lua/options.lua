@@ -114,6 +114,18 @@ vim.filetype.add({
 	},
 })
 
+-- postcss
+vim.filetype.add({
+	extension = {
+		scss = "scss",
+		sass = "sass",
+	},
+	pattern = {
+		[".*%.scss"] = "scss",
+		[".*%.sass"] = "sass",
+	},
+})
+
 -- treat css as css filetype
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	pattern = "*.css",
