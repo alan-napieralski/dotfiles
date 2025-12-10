@@ -115,6 +115,9 @@ alias config='/usr/bin/git --git-dir=/Users/nmkadmin/.cfg/ --work-tree=/Users/nm
 # Numiko specific for sitekit to run
 PATH="/opt/homebrew/opt/gpatch/libexec/gnubin:$PATH"
 
+# Use x86 Node for legacy projects with node-sass
+alias node-x86="arch -x86_64 /usr/local/bin/node"
+alias npm-x86="arch -x86_64 /usr/local/bin/node /usr/local/bin/npm"
 
 cd ~/Developer
 export PATH="$HOME/.local/bin:$PATH"
