@@ -117,7 +117,7 @@ PATH="/opt/homebrew/opt/gpatch/libexec/gnubin:$PATH"
 
 # Use x86 Node for legacy projects with node-sass
 alias node-x86="arch -x86_64 /usr/local/bin/node"
-alias npm-x86="arch -x86_64 /usr/local/bin/node /usr/local/bin/npm"
+alias npm-x86='arch -x86_64 /usr/local/opt/node@18/bin/node /usr/local/opt/node@18/bin/npm'
 
 cd ~/Developer
 export PATH="$HOME/.local/bin:$PATH"
