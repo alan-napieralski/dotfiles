@@ -265,6 +265,7 @@ return {
 						},
 					},
 				},
+				intelephense = {},
 				twiggy_language_server = {
 					filetypes = { "html", "twig" },
 					settings = {
@@ -396,6 +397,14 @@ return {
 								"classList",
 								"ngClass",
 							},
+							experimental = {
+								-- Enable Tailwind IntelliSense inside common Twig patterns.
+								-- Especially useful for Drupal: {{ attributes.addClass('...') }}
+								classRegex = {
+									{ "addClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*?)[\"'`]" },
+									{ "setAttribute\\([\"'`]class[\"'`],\\s*([^)]*)\\)", "[\"'`]([^\"'`]*?)[\"'`]" },
+								},
+							},
 						},
 					},
 				},
@@ -443,7 +452,11 @@ return {
 			-- Explicit config due to difference of naming between Lazy and Mason
 			vim.lsp.config(
 				"emmet_language_server",
-				vim.tbl_deep_extend("force", { capabilities = capabilities }, servers.emmet_language_server or {})
+				vim.tbl_deep_extend(
+					"force",
+					{ capabilities = capabilities },
+					servers.emmet_language_server or {}
+				)
 			)
 
 			vim.lsp.config("html", vim.tbl_deep_extend("force", { capabilities = capabilities }, servers.html or {}))
