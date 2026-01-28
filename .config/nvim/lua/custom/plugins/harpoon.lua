@@ -6,7 +6,34 @@ return {
 	config = function()
 		local harpoon = require("harpoon")
 
-		-- NOTE: integrate harpoon with nvim-project to get a per session harpoon save
+		local harpoon_config = {
+			settings = {
+				-- Persist Harpoon edits when closing/leaving the menu window.
+				save_on_toggle = true,
+				-- Also sync those changes to Harpoon’s on-disk JSON storage.
+				sync_on_ui_close = true,
+				-- Use the active neovim-project directory as the key.
+				key = function()
+					local project_path = require("neovim-project.utils.path")
+					return vim.fn.expand(project_path.dir_pretty or project_path.cwd() or vim.loop.cwd())
+				end,
+			},
+		}
+
+		-- Initial setup (may run before neovim-project finishes loading a session).
+		harpoon:setup(harpoon_config)
+
+		-- Re-run setup after session load so Harpoon reads the correct project file.
+		-- (Harpoon loads its data file on setup and doesn't automatically reload it when the key changes.)
+		local harpoon_group = vim.api.nvim_create_augroup("custom-harpoon", { clear = true })
+		vim.api.nvim_create_autocmd("User", {
+			group = harpoon_group,
+			pattern = "SessionLoadPost",
+			callback = function()
+				harpoon:setup(harpoon_config)
+			end,
+		})
+
 		vim.keymap.set("n", "<leader>a", function()
 			harpoon:list():add()
 		end)
