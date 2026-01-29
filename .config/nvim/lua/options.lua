@@ -96,7 +96,6 @@ vim.cmd([[
 ]])
 
 -- Numiko Settings
-
 vim.filetype.add({
 	extension = {
 		css = "postcss",
@@ -152,8 +151,8 @@ vim.diagnostic.config({
 })
 
 vim.diagnostic.config({
-	virtual_text = {
-		spacing = 4,
-		wrap = true, -- Neovim 0.10+ only, wraps long virtual text
+	float = {
+		wrap = true,
+		max_width = 80, -- or whatever width you prefer
 	},
 })
