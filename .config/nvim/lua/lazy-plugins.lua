@@ -63,8 +63,6 @@ require("lazy").setup({
 
 	require("custom/plugins/refactoring"),
 
-	require("custom/plugins/trouble"),
-
 	-- require("custom/plugins/fugitive"),
 
 	require("custom/plugins/diffview"),
