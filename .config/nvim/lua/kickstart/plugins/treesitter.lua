@@ -24,6 +24,7 @@ return {
 				"rust",
 				"vue",
 				"css",
+				"scss",
 				"twig",
 				"php",
 				"jsdoc",

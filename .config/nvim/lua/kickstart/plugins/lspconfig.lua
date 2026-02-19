@@ -208,8 +208,7 @@ return {
 			--  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
 			--  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
-			local lspconfig = require("lspconfig")
-			local mason_registry = require("mason-registry")
+			local lspconfig_util = require("lspconfig.util")
 
 			-- Enable the following language servers
 			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -266,6 +265,7 @@ return {
 						},
 					},
 				},
+				intelephense = {},
 				twiggy_language_server = {
 					filetypes = { "html", "twig" },
 					settings = {
@@ -288,13 +288,13 @@ return {
 							},
 						},
 						root_dir = function(fname)
-							return require("lspconfig").util.root_pattern("composer.json", "docroot")(fname)
-								or require("lspconfig").util.find_git_ancestor(fname)
+							return lspconfig_util.root_pattern("composer.json", "docroot")(fname)
+								or lspconfig_util.find_git_ancestor(fname)
 						end,
 					},
 				},
 				html = {
-					filetypes = { "html", "htmlangular", "htmldjango", "twig" },
+					filetypes = { "html", "htmlangular", "htmldjango" },
 					init_options = {
 						configurationSection = { "html", "css", "javascript" },
 						embeddedLanguages = {
@@ -323,6 +323,26 @@ return {
 						"twig",
 					},
 				},
+				cssls = {
+					filetypes = { "css", "scss", "less" },
+					settings = {
+						css = {
+							validate = true,
+							lint = {
+								unknownAtRules = "ignore", -- Ignore @tailwind and other custom at-rules
+							},
+						},
+						scss = {
+							validate = true,
+							lint = {
+								unknownAtRules = "ignore",
+							},
+						},
+						less = {
+							validate = true,
+						},
+					},
+				},
 				eslint = {
 					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
 					settings = {
@@ -340,7 +360,7 @@ return {
 				tailwindcss = {
 					filetypes = {
 						"html",
-						"twig", -- Add this
+						"twig",
 						"css",
 						"scss",
 						"javascript",
@@ -352,21 +372,44 @@ return {
 						"svelte",
 						"templ",
 					},
+					root_dir = function(fname)
+						return lspconfig_util.root_pattern(
+							"tailwind.config.js",
+							"tailwind.config.cjs",
+							"tailwind.config.mjs",
+							"tailwind.config.ts",
+							"postcss.config.js",
+							"postcss.config.cjs",
+							"postcss.config.mjs",
+							"postcss.config.ts"
+						)(fname)
+					end,
+					single_file_support = false,
 					settings = {
 						tailwindCSS = {
 							includeLanguages = {
-								twig = "html", -- Tell Tailwind to treat twig as HTML
+								twig = "html",
 							},
 							classAttributes = {
 								"class",
 								"className",
+								"class:list",
 								"classList",
 								"ngClass",
+							},
+							experimental = {
+								-- Enable Tailwind IntelliSense inside common Twig patterns.
+								-- Especially useful for Drupal: {{ attributes.addClass('...') }}
+								classRegex = {
+									{ "addClass\\(([^)]*)\\)", "[\"'`]([^\"'`]*?)[\"'`]" },
+									{ "setAttribute\\([\"'`]class[\"'`],\\s*([^)]*)\\)", "[\"'`]([^\"'`]*?)[\"'`]" },
+								},
 							},
 						},
 					},
 				},
 			}
+			local server_names = vim.tbl_keys(servers or {})
 
 			-- Ensure the servers and tools above are installed
 			--
@@ -388,6 +431,7 @@ return {
 				"vue-language-server",
 				"intelephense",
 				"html",
+				"cssls",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -401,18 +445,21 @@ return {
 						-- by the server configuration above. Useful when disabling
 						-- certain features of an LSP (for example, turning off formatting for ts_ls)
 						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-						require("lspconfig")[server_name].setup(server)
+						vim.lsp.config(server_name, server)
 					end,
 				},
 			})
-			-- Explicit setup due to difference of naming between Lazy and Mason
-			require("lspconfig").emmet_language_server.setup(vim.tbl_deep_extend("force", {
-				capabilities = capabilities,
-			}, servers.emmet_language_server or {}))
+			-- Explicit config due to difference of naming between Lazy and Mason
+			vim.lsp.config(
+				"emmet_language_server",
+				vim.tbl_deep_extend(
+					"force",
+					{ capabilities = capabilities },
+					servers.emmet_language_server or {}
+				)
+			)
 
-			require("lspconfig").html.setup(vim.tbl_deep_extend("force", {
-				capabilities = capabilities,
-			}, servers.html or {}))
+			vim.lsp.config("html", vim.tbl_deep_extend("force", { capabilities = capabilities }, servers.html or {}))
 
 			local vue_language_server_path = vim.fn.expand("$MASON/packages")
 				.. "/vue-language-server"
@@ -475,7 +522,9 @@ return {
 			-- nvim 0.11 or above
 			vim.lsp.config("vtsls", vtsls_config)
 			vim.lsp.config("vue_ls", vue_ls_config)
-			vim.lsp.enable({ "vtsls", "vue_ls", "html" })
+			-- Enable all configured servers
+			vim.list_extend(server_names, { "vtsls", "vue_ls" })
+			vim.lsp.enable(server_names)
 		end,
 	},
 }

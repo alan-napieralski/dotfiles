@@ -100,3 +100,6 @@ vim.keymap.set("n", "<leader>n", function()
 	-- no Flote buffer found → open Flote
 	vim.cmd("Flote")
 end, { desc = "Toggle Flote" })
+
+-- Diagnostics
+vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float)
