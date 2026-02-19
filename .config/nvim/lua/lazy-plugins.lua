@@ -55,19 +55,22 @@ require("lazy").setup({
 
 	require("custom/plugins/ts-autotag"),
 
-	-- require("custom/plugins/leap"),
-
 	require("custom/plugins/flote"),
 
 	require("custom/plugins/kanagawa"),
 
 	require("custom/plugins/refactoring"),
 
-	-- require("custom/plugins/fugitive"),
-
 	require("custom/plugins/diffview"),
 
 	require("custom/plugins/barbecue"),
+
+	require("custom/plugins/opencode"),
+
+	require("custom/plugins/99"),
+
+	-- require("custom/plugins/leap"),
+	-- require("custom/plugins/fugitive"),
 
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
 	-- init.lua. If you want these files, they are in the repository, so you can just download them and
