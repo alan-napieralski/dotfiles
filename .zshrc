@@ -125,5 +125,5 @@ export PATH="$HOME/.local/bin:$PATH"
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"
 
-alias cstatus='config status -uall -- .config/'
+alias cstatus='config status -uall -- ~/.config/ ~/.zshrc'
 alias cadd='config add -u'
