@@ -124,3 +124,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"
+
+alias cstatus='config status -uall -- .config/'
+alias cadd='config add -u'
