@@ -109,7 +109,7 @@ export NVM_DIR="$HOME/.nvm"
 
 
 # the dotfiles configuration
-alias config='git --git-dir="$HOME/.cfg/" --work-tree="$HOME"'
+alias config="git --git-dir='$HOME/.cfg/' --work-tree='$HOME'"
 
 
 # Numiko specific for sitekit to run
