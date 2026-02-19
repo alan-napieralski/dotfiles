@@ -121,3 +121,6 @@ alias npm-x86='arch -x86_64 /usr/local/opt/node@18/bin/node /usr/local/opt/node@
 
 cd ~/Developer
 export PATH="$HOME/.local/bin:$PATH"
+
+# opencode
+export PATH="$HOME/.opencode/bin:$PATH"
