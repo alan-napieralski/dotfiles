@@ -1,0 +1,11 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": ["./tools/philosophy.md"],
+  "permission": {
+    "edit": {
+      "*": "allow",
+      "tmp/*": "allow"
+    }
+  },
+  "mcp": {}
+}
