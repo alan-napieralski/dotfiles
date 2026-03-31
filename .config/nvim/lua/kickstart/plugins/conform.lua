@@ -1,3 +1,21 @@
+local eslint_root_markers = {
+	"eslint.config.js",
+	"eslint.config.mjs",
+	"eslint.config.cjs",
+	"eslint.config.ts",
+	".eslintrc",
+	".eslintrc.js",
+	".eslintrc.cjs",
+	".eslintrc.mjs",
+	".eslintrc.json",
+	".eslintrc.yaml",
+	".eslintrc.yml",
+}
+
+local function eslint_root_dir(_, ctx)
+	return vim.fs.root(ctx.dirname, eslint_root_markers)
+end
+
 return {
 	{ -- Autoformat
 		"stevearc/conform.nvim",
@@ -19,7 +37,15 @@ return {
 				-- Disable "format_on_save lsp_fallback" for languages that don't
 				-- have a well standardized coding style. You can add additional
 				-- languages here or re-enable it for the disabled ones.
-				local disable_filetypes = { c = true, cpp = true }
+				local disable_filetypes = {
+					c = true,
+					cpp = true,
+					javascript = true,
+					javascriptreact = true,
+					typescript = true,
+					typescriptreact = true,
+					vue = true,
+				}
 				local lsp_format_opt
 				if disable_filetypes[vim.bo[bufnr].filetype] then
 					lsp_format_opt = "never"
@@ -33,6 +59,11 @@ return {
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				javascript = { "eslint_d" },
+				javascriptreact = { "eslint_d" },
+				typescript = { "eslint_d" },
+				typescriptreact = { "eslint_d" },
+				vue = { "eslint_d" },
 				css = { "stylelint" },
 				scss = { "stylelint" },
 				postcss = { "stylelint" },
@@ -45,6 +76,10 @@ return {
 				-- javascript = { "prettierd", "prettier", stop_after_first = true },
 			},
 			formatters = {
+				eslint_d = {
+					cwd = eslint_root_dir,
+					require_cwd = true,
+				},
 				djlint = {
 					prepend_args = {
 						"--indent",

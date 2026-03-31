@@ -350,10 +350,21 @@ return {
 						workingDirectory = { mode = "auto" },
 					},
 					on_attach = function(client, bufnr)
-						-- Format (fix) on save
+						local group = vim.api.nvim_create_augroup("eslint-fixall-save-" .. bufnr, { clear = true })
 						vim.api.nvim_create_autocmd("BufWritePre", {
+							group = group,
 							buffer = bufnr,
-							command = "EslintFixAll",
+							callback = function()
+								client:request_sync("workspace/executeCommand", {
+									command = "eslint.applyAllFixes",
+									arguments = {
+										{
+											uri = vim.uri_from_bufnr(bufnr),
+											version = vim.lsp.util.buf_versions[bufnr],
+										},
+									},
+								}, nil, bufnr)
+							end,
 						})
 					end,
 				},
@@ -427,6 +438,7 @@ return {
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
+				"eslint_d",
 				"tailwindcss",
 				"vue-language-server",
 				"intelephense",
