@@ -119,7 +119,6 @@ PATH="/opt/homebrew/opt/gpatch/libexec/gnubin:$PATH"
 alias node-x86="arch -x86_64 /usr/local/bin/node"
 alias npm-x86='arch -x86_64 /usr/local/opt/node@18/bin/node /usr/local/opt/node@18/bin/npm'
 
-cd ~/Developer
 export PATH="$HOME/.local/bin:$PATH"
 
 # opencode
@@ -127,3 +126,13 @@ export PATH="$HOME/.opencode/bin:$PATH"
 
 alias cstatus='config status -uall -- ~/.config/ ~/.zshrc'
 alias cadd='config add -u'
+
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Configure another global config that's specific to my numiko workflow
+export OPENCODE_CONFIG_DIR="$HOME/Developer/.opencode"
