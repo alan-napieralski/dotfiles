@@ -26,6 +26,7 @@
 				end,
 			},
 			{ "nvim-telescope/telescope-ui-select.nvim" },
+			{ "ThePrimeagen/git-worktree.nvim" },
 
 			-- Useful for getting pretty icons, but requires a Nerd Font.
 			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
@@ -77,6 +78,7 @@
 			pcall(require("telescope").load_extension, "fzf")
 			pcall(require("telescope").load_extension, "ui-select")
 			pcall(require("telescope").load_extension, "refactoring")
+			pcall(require("telescope").load_extension, "git_worktree")
 
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
@@ -105,6 +107,12 @@
 			end, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 			vim.keymap.set("n", "<leader>sb", builtin.git_branches, { desc = "[S]earch Git [B]ranches" })
+			vim.keymap.set("n", "<leader>st", function()
+				require("telescope").extensions.git_worktree.git_worktrees()
+			end, { desc = "[S]earch [T]rees" })
+			vim.keymap.set("n", "<leader>sT", function()
+				require("telescope").extensions.git_worktree.create_git_worktree()
+			end, { desc = "[S]earch [T]rees Create" })
 			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 			vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>")
